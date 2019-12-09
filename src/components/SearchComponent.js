@@ -7,21 +7,10 @@ import {searchRecipes} from "../actions";
 const SearchComponent = (props) => {
     const onSearchEnter = async (e) =>{
         if(e.key === 'Enter'){
-            let params = {
-                diet:'',
-                excludeIngredients:'',
-                intolerances:'',
-                number:10,
-                offset:0,
-                type:'main course',
-                query:e.currentTarget.value
-            }
-            //props.searchRecipes(params)
             history.push({
-                    pathanme:'/search',
+                    pathname:'/search',
                     search:'?' +new URLSearchParams({query:e.currentTarget.value}).toString()
-                }
-                );
+                });
         }
     }
 

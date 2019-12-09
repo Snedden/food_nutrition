@@ -7,9 +7,9 @@ import {searchRecipes} from "../actions";
 
 
 
-const ResultList = (props) => {
+const ResultList = ({location, searchRecipes, searchResult}) => {
     useEffect(() =>{
-        const values = queryString.parse(props.location.search)
+        const values = queryString.parse(location.search)
         let params = {
             diet:'',
             excludeIngredients:'',
@@ -19,14 +19,14 @@ const ResultList = (props) => {
             type:'main course',
             query:values.query
         }
-        props.searchRecipes(params)
-    },[props.location.search]);
+        searchRecipes(params);
+    },[location.search]);
 
     return(
         <div>
             <h2>Results</h2>
             <div className="ui celled list">
-                {renderResultList(props.searchResult)}
+                {renderResultList(searchResult)}
             </div>
         </div>
     );

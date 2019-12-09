@@ -1,11 +1,13 @@
 import './RecipeItem.css';
 import React from 'react';
 
+import history from '../history';
+
 const RecipeItem = ({ recipe}) => {
     let baseUrl = 'https://spoonacular.com/recipeImages/';
     let imageUrl = baseUrl + recipe.image
     return (
-        <div  className="recipe-item item">
+        <div  className="recipe-item item" onClick={() =>history.push(`/recipe/${recipe.id}`)}>
             <img
                 alt={recipe.title}
                 className="ui image"
