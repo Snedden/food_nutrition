@@ -11,13 +11,7 @@ const ResultList = ({location, searchRecipes, searchResult}) => {
     useEffect(() =>{
         const values = queryString.parse(location.search)
         let params = {
-            diet:'',
-            excludeIngredients:'',
-            intolerances:'',
-            number:10,
-            offset:0,
-            type:'main course',
-            query:values.query
+            q:values.query
         }
         searchRecipes(params);
     },[location.search]);
@@ -38,10 +32,11 @@ const renderResultList = (list) => {
     console.log('list',list)
     if(list){
         return list.map(item=>{
+            console.log('item', item)
             return(
                 <RecipeItem
-                    key={item.id}
-                    recipe={item}
+                    key={item.recipe.uri}
+                    recipe={item.recipe}
                 />
             )
         })

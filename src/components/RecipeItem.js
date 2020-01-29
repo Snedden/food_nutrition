@@ -5,22 +5,22 @@ import history from '../history';
 
 const RecipeItem = ({ recipe}) => {
     let baseUrl = 'https://spoonacular.com/recipeImages/';
-    let imageUrl = baseUrl + recipe.image
+    let imageUrl = recipe.image
     return (
-        <div  className="recipe-item item" onClick={() =>history.push(`/recipe/${recipe.id}`)}>
+        <div  className="recipe-item item" onClick={() =>history.push(`/recipe/${recipe.label}`)}>
             <img
-                alt={recipe.title}
+                alt={recipe.label}
                 className="ui image"
                 src={imageUrl}
             />
             <div className="content">
-                <div className="header">{recipe.title}</div>
+                <div className="header">{recipe.label}</div>
                 <div>
                     <li>
-                        Ready in {recipe.readyInMinutes} minutes.
+                         {recipe.totalWeight} gms.
                     </li>
                     <li>
-                        Serves {recipe.servings}.
+                        Serves {recipe.yield}.
                     </li>
                 </div>
             </div>

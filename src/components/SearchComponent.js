@@ -5,7 +5,7 @@ import history from '../history';
 import {searchRecipes} from "../actions";
 
 const SearchComponent = (props) => {
-    const onSearchEnter = async (e) =>{
+    const  onSearchEnter = async (e) =>{
         if(e.key === 'Enter'){
             history.push({
                     pathname:'/search',
