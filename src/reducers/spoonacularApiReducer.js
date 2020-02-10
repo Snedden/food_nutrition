@@ -1,6 +1,6 @@
 import {
     RECIPE_INFO_FETCHED,
-    RECIPE_INFO_REQUESTED,
+    RECIPE_INFO_REQUESTED, RECIPE_SELECTED,
     RECIPE_SUMMARY_FETCHED,
     RECIPE_SUMMARY_REQUESTED,
     SEARCH_DONE,
@@ -27,6 +27,8 @@ export default (state = {
             return {...state, fetchingInfo: true};
         case RECIPE_INFO_FETCHED:
             return {...state, recipeInfo: action.payload.data, fetchingInfo: false};
+        case RECIPE_SELECTED:
+            return {...state, selectedRecipe: action.payload}
         default:
             return state;
     }

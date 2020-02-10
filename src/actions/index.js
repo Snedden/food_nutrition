@@ -2,7 +2,7 @@ import spoonacular from "../api/spoonacular";
 import edamam from '../api/edamam';
 import {
     RECIPE_INFO_FETCHED,
-    RECIPE_INFO_REQUESTED, RECIPE_LIST_FETCHED, RECIPE_LIST_REQUESTED,
+    RECIPE_INFO_REQUESTED, RECIPE_LIST_FETCHED, RECIPE_LIST_REQUESTED, RECIPE_SELECTED,
     RECIPE_SUMMARY_FETCHED,
     RECIPE_SUMMARY_REQUESTED,
     SEARCH_DONE,
@@ -43,6 +43,14 @@ export const getRecipeSummary = (id) => async dispatch => {
     dispatch({
         type: RECIPE_SUMMARY_FETCHED,
         payload: response.data
+    })
+}
+
+export const selectRecipe = (recipe) => dispatch =>{
+    console.log('dispatched', recipe);
+    dispatch({
+        type: RECIPE_SELECTED,
+        payload: recipe
     })
 }
 

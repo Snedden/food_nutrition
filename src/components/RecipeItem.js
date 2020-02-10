@@ -1,31 +1,54 @@
 import './RecipeItem.css';
 import React from 'react';
+import { connect } from 'react-redux';
 
-import history from '../history';
+import { selectRecipe} from "../actions";
 
-const RecipeItem = ({ recipe}) => {
+const RecipeItem = ({recipe, selectRecipe, ...rest}) => {
+    //see issue https://github.com/Semantic-Org/Semantic-UI-React/issues/2487 on why we add rest
     let baseUrl = 'https://spoonacular.com/recipeImages/';
-    let imageUrl = recipe.image
+
+    let defaultImage = process.env.PUBLIC_URL + '/recipe-default-image.png';
+    let imageUrl = recipe.image? recipe.image: defaultImage;
+
+     let addDefaultSrc = (e) => {
+         e.target.src= defaultImage;
+    }
+    
     return (
-        <div  className="recipe-item item" onClick={() =>history.push(`/recipe/${recipe.label}`)}>
-            <img
-                alt={recipe.label}
-                className="ui image"
-                src={imageUrl}
-            />
-            <div className="content">
-                <div className="header">{recipe.label}</div>
-                <div>
-                    <li>
-                         {recipe.totalWeight} gms.
-                    </li>
-                    <li>
-                        Serves {recipe.yield}.
-                    </li>
+        <div {...rest}>
+            <div
+                className="recipe-item item"
+                onError={(e) => addDefaultSrc(e)}
+                onClick={() => selectRecipe(recipe)}
+            >
+                <img
+                    alt={defaultImage}
+                    className="ui image"
+                    src={imageUrl}
+                />
+                <div className="content">
+                    <div className="header">{recipe.label}</div>
+                    <div>
+                        <li>
+                            {recipe.totalWeight} gms.
+                        </li>
+                        <li>
+                            Serves {recipe.yield}.
+                        </li>
+                    </div>
                 </div>
             </div>
+
         </div>
+
     );
 };
 
-export default RecipeItem;
+const mapStateToProps = (state) =>{
+    return {
+        selectedrecipe: state.spoonacularApi.selectedRecipe
+    }
+}
+
+export default connect(mapStateToProps,{selectRecipe})(RecipeItem);
