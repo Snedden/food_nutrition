@@ -4,9 +4,7 @@ import { connect } from 'react-redux';
 
 import { selectRecipe} from "../actions";
 
-const RecipeItem = ({recipe, selectRecipe, ...rest}) => {
-    //see issue https://github.com/Semantic-Org/Semantic-UI-React/issues/2487 on why we add rest
-    let baseUrl = 'https://spoonacular.com/recipeImages/';
+const RecipeItem = ({recipe, selectRecipe,isRecipeLiked, ...rest}) => {
 
     let defaultImage = process.env.PUBLIC_URL + '/recipe-default-image.png';
     let imageUrl = recipe.image? recipe.image: defaultImage;
@@ -14,14 +12,19 @@ const RecipeItem = ({recipe, selectRecipe, ...rest}) => {
      let addDefaultSrc = (e) => {
          e.target.src= defaultImage;
     }
-    
+
+
+
+    let likeIconClass = "heart icon";
+    likeIconClass += isRecipeLiked(recipe.uri)?" likedHeart":"" ;
     return (
         <div {...rest}>
             <div
                 className="recipe-item item"
                 onError={(e) => addDefaultSrc(e)}
-                onClick={() => selectRecipe(recipe)}
+                onClick={(e) => selectRecipe(recipe, e)}
             >
+
                 <img
                     alt={defaultImage}
                     className="ui image"
@@ -29,6 +32,7 @@ const RecipeItem = ({recipe, selectRecipe, ...rest}) => {
                 />
                 <div className="content">
                     <div className="header">{recipe.label}</div>
+                    <span>{recipe.liked?'true':'false'}</span>
                     <div>
                         <li>
                             {recipe.totalWeight} gms.
@@ -38,7 +42,15 @@ const RecipeItem = ({recipe, selectRecipe, ...rest}) => {
                         </li>
                     </div>
                 </div>
+                <div className="ui fluid image">
+                    <a
+                        className="ui right corner label"
+                    >
+                        <i aria-hidden="true" className={likeIconClass}></i>
+                    </a>
+                </div>
             </div>
+
 
         </div>
 

@@ -1,58 +1,90 @@
-import _ from 'lodash'
 import { connect} from 'react-redux';
-import React from 'react'
-import { Button, Header, Icon, Image, Modal } from 'semantic-ui-react'
-import {selectRecipe} from "../actions";
-import NivoPieChart from "./NivoPieChart";
+import {  Image, Modal } from 'semantic-ui-react'
+import { getTimelineData, getScatterData } from "./utils/dummyData"
+import RecipeMicros from "./RecipeMicros";
+import React from 'react';
+
+const getData = () => ({
+    timeline: getTimelineData(),
+    scatter: getScatterData(),
+})
 
 const RecipeDetails = ({selectedRecipe}) => {
-    const data =[
-        {
-            "id": "python",
-            "label": "python",
-            "value": 82,
-            "color": "hsl(188, 70%, 50%)"
-        },
-        {
-            "id": "hack",
-            "label": "hack",
-            "value": 13,
-            "color": "hsl(231, 70%, 50%)"
-        },
-        {
-            "id": "go",
-            "label": "go",
-            "value": 119,
-            "color": "hsl(20, 70%, 50%)"
-        },
-        {
-            "id": "php",
-            "label": "php",
-            "value": 110,
-            "color": "hsl(67, 70%, 50%)"
-        },
-        {
-            "id": "rust",
-            "label": "rust",
-            "value": 20,
-            "color": "hsl(118, 70%, 50%)"
-        }
-    ]
+
+
+    const getDataFromSelectedRecipe = ()=>
+        selectedRecipe.digest.map((nutrient, i) => {
+            return {
+                id:i,
+                label:nutrient.label,
+                value:nutrient.total,
+                unit: nutrient.unit
+            }
+        })
+
+    const renderLabelsBlocks=(type => {
+        return selectedRecipe[type].map((label) =>{
+            let icon,color;
+            switch (type) {
+                case  'cautions':
+                    icon="info circle icon";
+                    color="blanchedalmond";
+                    break;
+                case  'healthLabels':
+                    icon="hand point right outline icon";
+                    color="aliceblue";
+                    break;
+                case  'dietLabels':
+                    icon="thumbs up outline icon";
+                    color="antiquewhite";
+                    break;
+                default:
+                    icon="circle outline icon";
+                    color="grey";
+
+            }
+            const labelStyle = {
+                margin:'3px',
+                display:'block',
+                backgroundColor:color
+            }
+            return(
+                <a className="ui label" key={label} style={labelStyle}>
+                    <i aria-hidden="true" className={icon}></i>
+                    {label}
+                </a>
+                    )
+
+        })
+    });
+
+
    const divStyle = {innerHeight:500};
     return <React.Fragment>
-        <Image size='medium' src={selectedRecipe.image} wrapped />
+        <div>
+            <Image size='small' src={selectedRecipe.image} wrapped />
+            <div id = 'cautionsBlock' style={{paddingTop:'10px'}}>
+                {renderLabelsBlocks('cautions')}
+            </div>
+            <div id = 'dietLabelsBlock' style={{paddingTop:'10px'}}>
+                {renderLabelsBlocks('dietLabels')}
+            </div>
+            <div id = 'healthLabelsBlock' style={{paddingTop:'10px'}}>
+                {renderLabelsBlocks('healthLabels')}
+            </div>
+        </div>
 
-        <Modal.Description>
-            <Header>{selectedRecipe.label}</Header>
-            <div class="ui divided two column grid" >
+
+        <Modal.Description style={{width:'min-content'}}>
+            <div className="ui divided two column grid" >
                 <div className="row">
                     <div className="column">
                         <ul >
                             {renderIngredientList(selectedRecipe.ingredients)}
                         </ul>
                     </div>
-                    <div className="column" style={{ height: '300px', display:'flex'}}>
-                        <NivoPieChart data={data}/>
+                    <div className="column">
+                        <RecipeMicros/>
                     </div>
                 </div>
             </div>

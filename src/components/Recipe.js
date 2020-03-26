@@ -1,3 +1,4 @@
+/*
 import React, {useEffect} from 'react';
 import { connect} from 'react-redux';
 import {getRecipeSummary, getRecipeInfo} from "../actions";
@@ -97,4 +98,4 @@ export const mapStateToProps = (state)=>{
     }
 }
 
-export default connect(mapStateToProps,{getRecipeSummary, getRecipeInfo}) (Recipe);
+export default connect(mapStateToProps,{getRecipeSummary, getRecipeInfo}) (Recipe);*/
