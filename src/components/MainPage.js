@@ -1,6 +1,13 @@
 import React from 'react';
+import MainPageFeaturedList from "./MainPageFeaturedList";
 
-const TAGS = ['vegetable', 'desserts', 'lowfat']
+const FEATURED_RECIPES = [{
+        label: "Low Fat",
+        params: {
+            q: "oil",
+            diet: "low-fat"
+        }
+}]
 
 const MainPage = ()=>{
     return(
@@ -12,10 +19,14 @@ const MainPage = ()=>{
 }
 
 const renderTagsList = () =>{
-    return TAGS.map((tag) =>{
+    return FEATURED_RECIPES.map((featuredRecipe) =>{
+        let params = {
+            q:"chicken"
+        }
         return(
             <div className="item">
-                <h1>{tag}</h1>
+                {/*<h1>{featuredRecipe.label}</h1>*/}
+                <MainPageFeaturedList params ={featuredRecipe.params}/>
             </div>
         );
     })

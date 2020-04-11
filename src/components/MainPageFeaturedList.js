@@ -1,18 +1,20 @@
+
+
 import React, {useEffect} from 'react';
 import { connect} from 'react-redux';
-import queryString from 'query-string';
 
 import {searchRecipes, selectRecipe, likeUnlikeRecipe} from "../actions";
 import RecipeModal from "./RecipeModal";
+import {Card, Grid, Icon, Image} from 'semantic-ui-react'
 
 
 
-const ResultList = ({
-                        location,
+const MainPageFeaturedList = ({
                         searchRecipes,
                         searchResult,
                         token,
-                        user
+                        user,
+                        params
                     }) => {
 
 
@@ -21,7 +23,7 @@ const ResultList = ({
         if(user){
             likedRecipe =  user.likedRecipes.find((entry)=>{
                 return  entry.recipe.uri === recipeUri
-         })
+            })
         }
 
 
@@ -33,20 +35,16 @@ const ResultList = ({
 
     useEffect(() =>{
         if(true){
-            const values = queryString.parse(location.search)
-            let params = {
-                q:values.query
-            }
             searchRecipes(params, token);
         }
-    },[location.search, token]);
+    },[]);
 
     return(
         <div>
-            <h2>Results</h2>
-            <div className="ui celled list" >
+            <h2>Featured</h2>
+            <Grid container style={{justifyContent: "center"}} >
                 {renderResultList(searchResult,  isRecipeLiked)}
-            </div>
+            </Grid>
         </div>
     );
 };
@@ -57,20 +55,19 @@ const ResultList = ({
 
 const renderResultList = (list, isRecipeLiked) => {
 
-    //console.log('list',list)
     if(list){
         return list.map(item=>{
-            //console.log('item', item)
             return(
-                <div
+                <Grid.Column
                     className={'item'}
                     key={item.recipe.uri}
-                    style={{paddingRight:0, paddingTop:0}}
-                >
+                    style={{paddingRight:0, paddingTop:0, width:"fit-content"}}>
                     <RecipeModal
+                        key={item.recipe.uri}
                         item = {item}
                         isRecipeLiked = {(uri)=>isRecipeLiked(uri)}/>
-                </div>
+                </Grid.Column>
+
 
             )
         })
@@ -85,5 +82,6 @@ const mapStateToProps = (state) => {
         user: state.auth.user
     }
 };
+export {MainPageFeaturedList};
 
-export default connect(mapStateToProps,{searchRecipes, selectRecipe, likeUnlikeRecipe}) (ResultList);
+export default connect(mapStateToProps,{searchRecipes, selectRecipe, likeUnlikeRecipe}) (MainPageFeaturedList);
